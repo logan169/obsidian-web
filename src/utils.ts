@@ -11,8 +11,73 @@ import {
   SandboxExceptionResponse,
   SearchJsonResponseItem,
   SandboxLoadedResponse,
+  SubCaptions,
 } from "./types";
 import { DefaultSyncSettings, DefaultLocalSettings } from "./constants";
+
+const youtubeCaptionsScraper = require("youtube-captions-scraper"); // youtubeCaptionsScraper
+
+
+///////////////////////////////////////////////////////
+// youtubeCaptionsScraper functions
+///////////////////////////////////////////////////////
+
+
+export function srtTimestamp(seconds: number): string {
+    
+    var milliseconds = seconds * 1000;
+    seconds = Math.floor(milliseconds / 1000);
+    var minutes = Math.floor(seconds / 60);
+    var hours = Math.floor(minutes / 60);
+    milliseconds = milliseconds % 1000;
+    seconds = seconds % 60;
+    minutes = minutes % 60;
+    return (hours < 10 ? '0' : '') + hours + ':'
+         + (minutes < 10 ? '0' : '') + minutes + ':'
+         + (seconds < 10 ? '0' : '') + seconds + ','
+         + (milliseconds < 100 ? '0' : '') + (milliseconds < 10 ? '0' : '') + milliseconds;
+}
+
+
+export function inputToSRT(srtCount: number, sub_in: SubCaptions) {
+  return srtCount + "\r\n" + srtTimestamp(Number(sub_in.start)) + " --> " + srtTimestamp(Number(sub_in.dur)) + "\r\n" + sub_in.text + "\r\n\r\n";
+}
+
+export function getUrlCaptions(url: string, language:  string): Array<SubCaptions> {
+  
+  const captionsArray = youtubeCaptionsScraper.getSubtitles(
+    {
+      videoID: url.split("v=")[1].split("&")[0], // extract youtube video id
+      lang: language
+    }
+  )
+
+  return captionsArray 
+}
+
+
+export function getUrlSrtSubtitles(url: string, language:  string): string {
+
+  const captionsArray = getUrlCaptions(url, language);
+
+  // declare var
+  var srtCount = 0;
+  var srtString = '';
+
+  // formating captions to srt text format
+  for (var i=0; i<captionsArray.length; i++) {
+    srtString = srtString + inputToSRT(++srtCount, captionsArray[i]);
+  }
+
+  console.log(srtString);
+
+  return srtString;
+
+}
+
+///////////////////////////////////////////////////////
+
+
 
 const HandlebarsCallbacks: Record<
   string,

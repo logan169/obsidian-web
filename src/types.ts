@@ -98,3 +98,11 @@ export interface FileMetadataObject {
   path: string;
   content: string;
 }
+
+
+// returned array object structure
+export interface SubCaptions {
+  start: string;
+  dur: string;
+  text: string;
+}

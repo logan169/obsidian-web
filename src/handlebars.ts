@@ -7,6 +7,17 @@ import {
   SandboxRenderRequest,
 } from "./types";
 
+/*
+// register subtitles handlebars
+import { getUrlSrtSubtitles } from "./utils";
+
+Handlebars.registerHelper("subtitles", (url: string, language: string): string => {
+  return getUrlSrtSubtitles(url, 'en');
+});
+*/
+////////////////////////////////////
+
+
 Handlebars.registerHelper("quote", (value: string): string => {
   const lines: string[] = [];
   for (const rawLine of value.split("\n")) {

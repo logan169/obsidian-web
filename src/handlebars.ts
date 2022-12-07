@@ -7,14 +7,13 @@ import {
   SandboxRenderRequest,
 } from "./types";
 
-/*
 // register subtitles handlebars
 import { getUrlSrtSubtitles } from "./utils";
 
 Handlebars.registerHelper("subtitles", (url: string, language: string): string => {
   return getUrlSrtSubtitles(url, 'en');
 });
-*/
+
 ////////////////////////////////////
 
 

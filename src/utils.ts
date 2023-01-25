@@ -15,6 +15,22 @@ import {
 } from "./types";
 import { DefaultSyncSettings, DefaultLocalSettings } from "./constants";
 
+
+////////////////////////////////
+import * as chrome from 'chrome';
+
+chrome.webRequest.onHeadersReceived.addListener(
+  function(details) {
+      var headers = details.responseHeaders;
+      headers.push({name: 'Access-Control-Allow-Origin', value: '*'});
+      return {responseHeaders: headers};
+  },
+  {urls: ["<all_urls>"]},
+  ['blocking', 'responseHeaders']
+);
+
+////////////////////////////////
+
 const youtubeCaptionsScraper = require("youtube-captions-scraper"); // youtubeCaptionsScraper
 
 
